@@ -22,8 +22,10 @@ namespace GoErgoUI
     public partial class Form1 : Form
     {
         [DllImport("GoErgo.dll")]
-        unsafe static extern int get_stats(int* blink, int* ambient_alarm, int* posture_alarm, int use_buf);
+        unsafe static extern int get_stats(int* blink, int* ambient_alarm, int* posture_alarm, float * percent_ambient, int use_buf);
 
+        [DllImport("GoErgo.dll")]
+        unsafe static extern void calibrate();
         [DllImport("GoErgo.dll")]
         static extern int webCamMain();
 
@@ -35,14 +37,6 @@ namespace GoErgoUI
         public Form1()
         {
             InitializeComponent();
-            // Start of Webcam worker thread
-            Thread camThread = new Thread(new ThreadStart(webCamMainWrapper));
-            camThread.Start();
-
-            Thread statsThread = new Thread(new ThreadStart(GetStats));
-            statsThread.Start();
-            statsThread.IsBackground = true;
-            // End of WebCam worker thread
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -55,6 +49,9 @@ namespace GoErgoUI
         }
 
         static int temp_counter = 0;
+        static int blink_cntr = 0;
+        static int posture_cntr = 0;
+        static int ambient_light_cntr = 0;
         unsafe void GetStats()
         {
             while (true)
@@ -63,8 +60,12 @@ namespace GoErgoUI
                 this.label2.BeginInvoke((MethodInvoker)delegate()
                 {
                     int blink, ambient_alarm, posture_alarm;
-                    get_stats(&blink, &ambient_alarm, &posture_alarm, 1);
-                    label2.Text = String.Format(temp_counter++ + ":" + blink + ":" + ambient_alarm + ":" + posture_alarm);
+                    float percent_ambient;
+                    get_stats(&blink, &ambient_alarm, &posture_alarm, &percent_ambient, 1);
+                    ambient_light_cntr += ambient_alarm;
+                    blink_cntr += blink;
+                    posture_cntr += posture_alarm;
+                    label2.Text = String.Format(temp_counter++ + ":" + blink_cntr + ":" + ambient_light_cntr + ":" + posture_cntr);
                 });
             }
 
@@ -131,6 +132,19 @@ namespace GoErgoUI
 
         private void label2_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Start of Webcam worker thread
+            Thread camThread = new Thread(new ThreadStart(webCamMainWrapper));
+            camThread.Start();
+
+            // End of WebCam worker thread
+            Thread statsThread = new Thread(new ThreadStart(GetStats));
+            statsThread.Start();
+            statsThread.IsBackground = true;
 
         }
 

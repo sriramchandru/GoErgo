@@ -28,6 +28,8 @@ using namespace std;
 #define POINTS(r)		POINT_TL(r), POINT_BR(r)
 
 bool detectProximityAndEye(Mat mat_frame);
+int configureDefaults(Mat &mat_frame);
+int detectAmbientLight(Mat &mat_frame, bool configure);
 
 typedef struct stats
 {
@@ -43,6 +45,7 @@ typedef struct posture
 	unsigned int clock_ticks;
 	FILETIME time;
 	CvRect faceRect, eyeRect;
+	float percent_ambient;
 	bool alarm_ambient_light;
 	bool alarm_proximity;
 	bool alaram_sitting_posture;
@@ -142,7 +145,7 @@ void exit_nicely(char* msg);
 	return 1;
 }
 
- extern "C"  __declspec(dllexport)int get_stats(int *blink, int *ambient_alarm, int *posture_alarm, int use_buf = 1 )
+ extern "C"  __declspec(dllexport)int get_stats(int *blink, int *ambient_alarm, int *posture_alarm, float *percent_ambient, int use_buf = 1 )
  {
 	 if (!posture_with_blink_list.empty())
 	 {
@@ -151,6 +154,7 @@ void exit_nicely(char* msg);
 		 *blink = last_posture.eye_blinks;
 		 *ambient_alarm = last_posture.alarm_ambient_light;
 		 *posture_alarm = last_posture.alarm_proximity;
+		 *percent_ambient = last_posture.percent_ambient;
 		 buf_num = 0;
 		 return 1;
 	 }
@@ -160,6 +164,7 @@ void exit_nicely(char* msg);
 			 *blink = buf_posture.eye_blinks;
 			 *ambient_alarm = buf_posture.alarm_ambient_light;
 			 *posture_alarm = buf_posture.alarm_proximity;
+			 *percent_ambient = buf_posture.percent_ambient;
 			 buf_num = 0;
 			 return 1;
 		 }
@@ -167,6 +172,7 @@ void exit_nicely(char* msg);
 	 *blink = curr_posture.eye_blinks;
 	 *ambient_alarm = curr_posture.alarm_ambient_light;
 	 *posture_alarm = curr_posture.alarm_proximity;
+	 *percent_ambient = buf_posture.percent_ambient;
 	 buf_num = 0;
 	 return 1;
 
@@ -361,23 +367,17 @@ locate_eye(IplImage* img, IplImage* tpl, CvRect* window, CvRect* eye)
 	return 1;
 }
 
-int
-is_blink(CvSeq* comp, int num, CvRect window, CvRect eye)
+bool inBoxBoundary(CvRect &r1, CvRect &window, CvRect &eye)
 {
-	if (comp == 0 || num != 1)
-		return 0;
-
-	CvRect r1 = cvBoundingRect(comp, 1);
-
-	/* component is within the search window */
+/* component is within the search window */
 	if (r1.x < window.x)
-		return 0;
+		return false;
 	if (r1.y < window.y)
-		return 0;
+		return false;
 	if (r1.x + r1.width > window.x + window.width)
-		return 0;
+		return false;
 	if (r1.y + r1.height > window.y + window.height)
-		return 0;
+		return false;
 
 	/* get the centroid of eye */
 	CvPoint pt = cvPoint(
@@ -387,18 +387,38 @@ is_blink(CvSeq* comp, int num, CvRect window, CvRect eye)
 
 	/* component is located at the eye's centroid */
 	if (pt.x <= r1.x || pt.x >= r1.x + r1.width)
-		return 0;
+		return false;
 	if (pt.y <= r1.y || pt.y >= r1.y + r1.height)
+		return false;
+
+	return true;
+}
+int
+is_blink(CvSeq* comp, int num, CvRect window, CvRect eye)
+{
+	if (comp == 0 || num < 1)
 		return 0;
 
-	return 1;
+	CvRect r1 = cvBoundingRect(comp, 1);
+	for (int i = 0; i < num && i < 4; ++i)
+	{
+		if (inBoxBoundary(r1, window, eye))
+			return 1;
+	}
+
+	return 0;
 }
 
 
+extern "C" __declspec(dllexport) void calibrate(void)
+{
+	configureDefaults(mat_frame);
+	detectAmbientLight(mat_frame, true);
+}
 /**
 * Initialize images, memory, and windows
 */
-extern "C"  __declspec( dllexport ) int init()
+extern "C"  __declspec( dllexport ) int initCam(void)
 {
 //	pFile = fopen("stats.txt", "a+");
 	GetSystemTimeAsFileTime(&st);
@@ -458,6 +478,8 @@ extern "C"  __declspec( dllexport ) int init()
 	previous->origin = frame->origin;
 	diff->origin = frame->origin;
 
+	configureDefaults(mat_frame);
+	detectAmbientLight(mat_frame,true);
 	cvNamedWindow(wnd_debug, 1);
 	return 1;
 }
@@ -669,7 +691,7 @@ int detectBlink(Mat &mat_frame, IplImage *frame, bool eye_hint)
 				stage = STAGE_INIT;
 
 			if (is_blink(comp, nc, window, eye)) {
-				__raise source.BlinkEvent(1);
+				//__raise source.BlinkEvent(1);
 				++blink_count;
 				++total_blink_count;
 				buf_num = 20;
@@ -693,7 +715,7 @@ int detectBlink(Mat &mat_frame, IplImage *frame, bool eye_hint)
 		return 1;
 
 }
-int detectAmbientLight(Mat &mat_frame, IplImage *frame, bool configure = false)
+int detectAmbientLight(Mat &mat_frame, bool configure = false)
 {
 	Mat frame_yuv;
     cvtColor( mat_frame, frame_yuv, CV_BGR2YUV );
@@ -728,6 +750,7 @@ int detectAmbientLight(Mat &mat_frame, IplImage *frame, bool configure = false)
 		*/
 	}
 
+
 	if ((threshold_luminance *0.8) > avg_luminance)
 	{
 		ambient_light_alm = true;
@@ -737,6 +760,7 @@ int detectAmbientLight(Mat &mat_frame, IplImage *frame, bool configure = false)
 	else {
 		ambient_light_alm = false;
 	}
+	curr_posture.percent_ambient = (float)avg_luminance * 100.0 / (float)threshold_luminance;
 	curr_posture.alarm_ambient_light = ambient_light_alm;
 
 	return 1;
@@ -747,7 +771,7 @@ int detectAmbientLight(Mat &mat_frame, IplImage *frame, bool configure = false)
  extern "C"  __declspec( dllexport ) int webCamMain(void)
 {
 	Mat mat_frame;
-	init();
+	initCam();
 	while (capture.read(mat_frame))
 	{
 		GetSystemTimeAsFileTime(&currt);
@@ -767,7 +791,7 @@ int detectAmbientLight(Mat &mat_frame, IplImage *frame, bool configure = false)
 		bool eye_hint = detectProximityAndEye(mat_frame);
 
 		detectBlink(mat_frame, frame, false);
-		detectAmbientLight(mat_frame,frame);
+		detectAmbientLight(mat_frame);
 
 		posture_vec.push_back(curr_posture);
 
@@ -785,7 +809,7 @@ int detectAmbientLight(Mat &mat_frame, IplImage *frame, bool configure = false)
 			break;
 		} else if ((char)c == 'c') { 
 			configureDefaults(mat_frame);
-			detectAmbientLight(mat_frame, frame, true);
+			detectAmbientLight(mat_frame, true);
 		}
 		if (blink_count > 0) {
 			posture_with_blink_list.push_back(curr_posture);
@@ -852,7 +876,6 @@ bool detectProximityAndEye(Mat mat_frame)
 	/*
 	*/
 	//-- Show what you got
-	//imshow(window_name, mat_frame);
 	if (frame)
 		delete frame;
 	frame = new IplImage(mat_frame);

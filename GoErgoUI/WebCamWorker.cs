@@ -28,7 +28,7 @@ __gc class CReceiver {
         [DllImport("GoErgo.dll")]
         static extern int webCamMain();
         [DllImport("GoErgo.dll")]
-        static extern int get_stats(int* blink, int* ambient_alarm, int* posture_alarm, int use_buf);
+        static extern int get_stats(int* blink, int* ambient_alarm, int* posture_alarm, float* percent_ambient, int use_buf);
         public void DoWork()
         {
             webCamMain();
@@ -41,7 +41,8 @@ __gc class CReceiver {
 
             Thread.Sleep(1000);
             int blink, ambient_alarm, posture_alarm;
-            get_stats(&blink, &ambient_alarm, &posture_alarm, 1);
+            float percent_ambient;
+            get_stats(&blink, &ambient_alarm, &posture_alarm, &percent_ambient, 1);
                 int[] data = new int[3];
                 data[0] = blink;
                 data[1] = ambient_alarm;
