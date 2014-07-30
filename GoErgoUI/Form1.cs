@@ -29,7 +29,7 @@ namespace GoErgoUI
         [DllImport("GoErgo.dll")]
         static extern int webCamMain();
 
-        static public double phoneAngle;
+        static public double phoneAngle = 90;
 
         void webCamMainWrapper()
         {
@@ -59,24 +59,43 @@ namespace GoErgoUI
             {
                 button1.BackgroundImage = Image.FromFile(imgfile);
             });
-
+/*
             eyeBlinkCounter.BeginInvoke((MethodInvoker)delegate()
             {
                 eyeBlinkCounter.Text = String.Format("Blink Counter = " + blink_cntr);
             });
-
+*/
         }
 
-/*
-        static int lightMax;
-        static int lightMin;
+        static float lightMax = 130;
+        static float lightMin = 0;
         private void processAmbientLight(float percent_ambient)
         {
-            Color color = Color.F
+            if(percent_ambient <0)
+                percent_ambient = 0;
+            if(percent_ambient > 255)
+                percent_ambient = 255;
+            if(lightMin > percent_ambient)
+                lightMin = percent_ambient;
+            if(lightMax < percent_ambient)
+                lightMax = percent_ambient;
 
-            Form1.DefaultBackColor = new Color()
+            int val = Convert.ToInt32(percent_ambient * 255/lightMax);
+            this.BeginInvoke((MethodInvoker)delegate()
+            {
+                this.BackColor = Color.FromArgb(val, val, val);
+
+            });
+            pictureBack.BeginInvoke((MethodInvoker)delegate()
+            {
+                pictureBack.BackColor = Color.FromArgb(val, val, val);
+            });
+            eyeBlinkCounter.BeginInvoke((MethodInvoker)delegate()
+            {
+                eyeBlinkCounter.Text = String.Format("Max Value = " + lightMax + "; Min Value = " + lightMin + "; Current Value = " + percent_ambient);
+            });
         }
- */
+
         /*
         static bool isInitialized = false;
         static int xLocation = 0;
@@ -139,7 +158,7 @@ namespace GoErgoUI
                     processBlink(blink);
 
                     processProximity(posture_alarm);
-//                    processAmbientLight(percent_ambient);
+                    processAmbientLight(percent_ambient);
 
                 }
                 catch (Exception ex)
@@ -168,9 +187,18 @@ namespace GoErgoUI
 
         }
 
+        static int face_x;
+        static int face_y;
+        static bool isInitialized = false;
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-             
+
+            if (!isInitialized)
+            {
+                face_x = pictureFace.Location.X;
+                face_y = pictureFace.Location.Y;
+                isInitialized = true;
+            }
             try
             {
                 //MessageBox.Show(serialPort1.ReadLine());
@@ -181,6 +209,8 @@ namespace GoErgoUI
                         string rotationAngle = serialPort1.ReadLine(); ;
                         rotationAngleInt = Convert.ToDouble(rotationAngle);
                         phoneAngle = rotationAngleInt;
+                        int faceDisplacement = -Convert.ToInt32(Math.Round(Math.Tan(0.01745 * (phoneAngle - 90.0)) * pictureFace.Size.Height, 0));
+                        pictureFace.Location = new Point(face_x + faceDisplacement, face_y);
                         RotateImg(pictureBack, "../../Resources/back.jpg", (rotationAngleInt - 90.0).ToString());
                     }
                     catch(Exception ex)

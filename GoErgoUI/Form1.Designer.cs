@@ -66,7 +66,7 @@ namespace GoErgoUI
             this.eyeBlinkCounter.AutoSize = true;
             this.eyeBlinkCounter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.eyeBlinkCounter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eyeBlinkCounter.Location = new System.Drawing.Point(12, 139);
+            this.eyeBlinkCounter.Location = new System.Drawing.Point(31, 174);
             this.eyeBlinkCounter.Name = "eyeBlinkCounter";
             this.eyeBlinkCounter.Size = new System.Drawing.Size(0, 20);
             this.eyeBlinkCounter.TabIndex = 5;
@@ -86,7 +86,7 @@ namespace GoErgoUI
             // laptopPicture
             // 
             this.laptopPicture.Image = global::GoErgoUI.Properties.Resources.laptop;
-            this.laptopPicture.Location = new System.Drawing.Point(663, 258);
+            this.laptopPicture.Location = new System.Drawing.Point(696, 258);
             this.laptopPicture.Name = "laptopPicture";
             this.laptopPicture.Size = new System.Drawing.Size(142, 187);
             this.laptopPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -97,7 +97,7 @@ namespace GoErgoUI
             // 
             this.button1.BackgroundImage = global::GoErgoUI.Properties.Resources.OpenEye;
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.Location = new System.Drawing.Point(-2, 1);
+            this.button1.Location = new System.Drawing.Point(0, 1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(176, 151);
             this.button1.TabIndex = 8;
@@ -106,7 +106,7 @@ namespace GoErgoUI
             // pictureFace
             // 
             this.pictureFace.Image = global::GoErgoUI.Properties.Resources.face;
-            this.pictureFace.Location = new System.Drawing.Point(389, 165);
+            this.pictureFace.Location = new System.Drawing.Point(389, 100);
             this.pictureFace.Margin = new System.Windows.Forms.Padding(2);
             this.pictureFace.Name = "pictureFace";
             this.pictureFace.Size = new System.Drawing.Size(110, 94);
@@ -117,7 +117,7 @@ namespace GoErgoUI
             // pictureLeg
             // 
             this.pictureLeg.Image = global::GoErgoUI.Properties.Resources.leg;
-            this.pictureLeg.Location = new System.Drawing.Point(389, 555);
+            this.pictureLeg.Location = new System.Drawing.Point(423, 557);
             this.pictureLeg.Margin = new System.Windows.Forms.Padding(2);
             this.pictureLeg.Name = "pictureLeg";
             this.pictureLeg.Size = new System.Drawing.Size(232, 53);
@@ -128,11 +128,10 @@ namespace GoErgoUI
             // pictureBack
             // 
             this.pictureBack.Image = global::GoErgoUI.Properties.Resources.back1;
-            this.pictureBack.Location = new System.Drawing.Point(289, 258);
+            this.pictureBack.Location = new System.Drawing.Point(288, 198);
             this.pictureBack.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBack.Name = "pictureBack";
-            this.pictureBack.Size = new System.Drawing.Size(300, 292);
-            this.pictureBack.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBack.Size = new System.Drawing.Size(300, 345);
             this.pictureBack.TabIndex = 2;
             this.pictureBack.TabStop = false;
             // 

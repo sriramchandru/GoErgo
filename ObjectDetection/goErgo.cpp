@@ -656,7 +656,12 @@ int detectBlink(Mat &mat_frame, IplImage *frame, bool eye_hint)
 				//cvReleaseImage(&tpl);
 				//tpl = cvCreateImage(cvSize(eye.width, eye.height), 8, 1);
 				cvSetImageROI(gray, eye);
-				cvCopy(gray, tpl, NULL);
+				try {
+					cvCopy(gray, tpl, NULL);
+				}
+				catch (Exception e)
+				{
+				}
 				cvResetImageROI(gray);
 
 				curr_posture.eyeRect = eye;
