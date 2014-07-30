@@ -54,14 +54,19 @@ namespace GoErgoUI
             
         }
 
+        static int temp_counter = 0;
         unsafe void GetStats()
         {
-            Thread.Sleep(1000);
-            this.label2.BeginInvoke((MethodInvoker) delegate() {
-                int blink, ambient_alarm, posture_alarm;
-                get_stats(&blink, &ambient_alarm, &posture_alarm, 1);
-                label2.Text = String.Format(blink + ":" + ambient_alarm + ":" + posture_alarm);
-                }); 
+            while (true)
+            {
+                Thread.Sleep(1000);
+                this.label2.BeginInvoke((MethodInvoker)delegate()
+                {
+                    int blink, ambient_alarm, posture_alarm;
+                    get_stats(&blink, &ambient_alarm, &posture_alarm, 1);
+                    label2.Text = String.Format(temp_counter++ + ":" + blink + ":" + ambient_alarm + ":" + posture_alarm);
+                });
+            }
 
         }
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
