@@ -9,3 +9,9 @@ D:\Hack\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.pdb
 C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\bin\Debug\GoErgoUI.exe.config
 C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.exe
 C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.pdb
+C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\bin\Debug\GoErgoUI.exe
+C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\bin\Debug\GoErgoUI.pdb
+C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.csprojResolveAssemblyReference.cache
+C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.Form1.resources
+C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.Properties.Resources.resources
+C:\Users\sriramch\Documents\GitHub\GoErgo\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.csproj.GenerateResource.Cache

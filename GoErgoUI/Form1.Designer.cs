@@ -43,7 +43,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(9, 10);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(118, 32);
             this.button1.TabIndex = 0;
@@ -53,7 +53,7 @@
             // 
             // serialPort1
             // 
-            this.serialPort1.PortName = "COM11";
+            this.serialPort1.PortName = "COM5";
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
             // label1
@@ -70,7 +70,7 @@
             // 
             this.pictureFace.Image = global::GoErgoUI.Properties.Resources.face;
             this.pictureFace.Location = new System.Drawing.Point(197, 46);
-            this.pictureFace.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureFace.Margin = new System.Windows.Forms.Padding(2);
             this.pictureFace.Name = "pictureFace";
             this.pictureFace.Size = new System.Drawing.Size(110, 94);
             this.pictureFace.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -81,7 +81,7 @@
             // 
             this.pictureLeg.Image = global::GoErgoUI.Properties.Resources.leg;
             this.pictureLeg.Location = new System.Drawing.Point(197, 436);
-            this.pictureLeg.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureLeg.Margin = new System.Windows.Forms.Padding(2);
             this.pictureLeg.Name = "pictureLeg";
             this.pictureLeg.Size = new System.Drawing.Size(232, 53);
             this.pictureLeg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -92,7 +92,7 @@
             // 
             this.pictureBack.Image = global::GoErgoUI.Properties.Resources.back1;
             this.pictureBack.Location = new System.Drawing.Point(97, 139);
-            this.pictureBack.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBack.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBack.Name = "pictureBack";
             this.pictureBack.Size = new System.Drawing.Size(300, 292);
             this.pictureBack.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -110,7 +110,7 @@
             this.Controls.Add(this.pictureBack);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureFace)).EndInit();
