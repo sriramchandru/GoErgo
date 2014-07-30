@@ -29,6 +29,8 @@ namespace GoErgoUI
         [DllImport("GoErgo.dll")]
         static extern int webCamMain();
 
+        static public double phoneAngle;
+
         void webCamMainWrapper()
         {
             webCamMain();
@@ -37,13 +39,85 @@ namespace GoErgoUI
         public Form1()
         {
             InitializeComponent();
+            serialPort1.Open();
+            string[] ports = SerialPort.GetPortNames();
         }
 
+        private void processBlink(int blink)
+        {
+            string imgfile;
+            if (blink == 1)
+            {
+                imgfile = "../../Resources/ClosedEye.jpg";
+                blink_cntr++;
+            }
+            else
+            {
+                imgfile = "../../Resources/OpenEye.jpg";
+            }
+            button1.BeginInvoke((MethodInvoker)delegate()
+            {
+                button1.BackgroundImage = Image.FromFile(imgfile);
+            });
+
+            eyeBlinkCounter.BeginInvoke((MethodInvoker)delegate()
+            {
+                eyeBlinkCounter.Text = String.Format("Blink Counter = " + blink_cntr);
+            });
+
+        }
+
+/*
+        static int lightMax;
+        static int lightMin;
+        private void processAmbientLight(float percent_ambient)
+        {
+            Color color = Color.F
+
+            Form1.DefaultBackColor = new Color()
+        }
+ */
+        /*
+        static bool isInitialized = false;
+        static int xLocation = 0;
+        static int yLocation = 0;
+         */
+
+        static int pastPosition = 0;
+        void processProximity(int posture_alarm)
+        {
+
+            /*
+            if (!isInitialized)
+            {
+                xLocation = laptopPicture.Location.X;
+                yLocation = laptopPicture.Location.Y;
+                isInitialized = true;
+            }
+             */
+
+            if (pastPosition == 1 && posture_alarm == 1)
+                return;
+            if (pastPosition == 0 && posture_alarm == 0)
+                return;
+            pastPosition = posture_alarm;
+            int displacement = 0;
+            if(posture_alarm == 1)
+                displacement = -100;
+            else
+                displacement = 100;
+            laptopPicture.BeginInvoke((MethodInvoker)delegate()
+            {
+                int x = laptopPicture.Location.X;
+                int y = laptopPicture.Location.Y;
+
+                Point p = new Point(x + displacement, y);
+                laptopPicture.Location = p;
+            });
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             //Thread eyeblink = new Thread()
-            serialPort1.Open();
-            string[] ports = SerialPort.GetPortNames();
             //MessageBox.Show(ports.ToString());
             
         }
@@ -56,20 +130,44 @@ namespace GoErgoUI
         {
             while (true)
             {
-                Thread.Sleep(1000);
-                this.label2.BeginInvoke((MethodInvoker)delegate()
+                Thread.Sleep(500);
+                try
                 {
                     int blink, ambient_alarm, posture_alarm;
                     float percent_ambient;
                     get_stats(&blink, &ambient_alarm, &posture_alarm, &percent_ambient, 1);
-                    ambient_light_cntr += ambient_alarm;
-                    blink_cntr += blink;
-                    posture_cntr += posture_alarm;
-                    label2.Text = String.Format(temp_counter++ + ":" + blink_cntr + ":" + ambient_light_cntr + ":" + posture_cntr);
-                });
+                    processBlink(blink);
+
+                    processProximity(posture_alarm);
+//                    processAmbientLight(percent_ambient);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Unknown Exception while processing image output");
+                }
+/*
+                try
+                {
+                    this.label2.BeginInvoke((MethodInvoker)delegate()
+                        {
+                            int blink, ambient_alarm, posture_alarm;
+                            float percent_ambient;
+                            get_stats(&blink, &ambient_alarm, &posture_alarm, &percent_ambient, 1);
+                            ambient_light_cntr += ambient_alarm;
+                            blink_cntr += blink;
+                            posture_cntr += posture_alarm;
+                            label2.Text = String.Format(temp_counter++ + ":" + blink_cntr + ":" + ambient_light_cntr + ":" + posture_cntr);
+                        });
+                } catch (Exception ex)
+                {
+                    break;
+                }
+ */
             }
 
         }
+
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
              
@@ -82,12 +180,12 @@ namespace GoErgoUI
                     {
                         string rotationAngle = serialPort1.ReadLine(); ;
                         rotationAngleInt = Convert.ToDouble(rotationAngle);
+                        phoneAngle = rotationAngleInt;
+                        RotateImg(pictureBack, "../../Resources/back.jpg", (rotationAngleInt - 90.0).ToString());
                     }
                     catch(Exception ex)
                     {
-                        MessageBox.Show("NaN in rotation angle. " + ex.Message);
                     }
-                    RotateImg(pictureBack, "../../Resources/back.jpg", (rotationAngleInt-90.0).ToString());
 
                 }); 
             }
@@ -145,6 +243,11 @@ namespace GoErgoUI
             Thread statsThread = new Thread(new ThreadStart(GetStats));
             statsThread.Start();
             statsThread.IsBackground = true;
+
+
+            Form formwid = new FormWidget();
+            formwid.Show();
+
 
         }
 
