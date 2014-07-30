@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.IO.Ports;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 
 //using goErgo;
 
@@ -20,11 +21,28 @@ namespace GoErgoUI
 {
     public partial class Form1 : Form
     {
-        private string angle;
+        [DllImport("GoErgo.dll")]
+        unsafe static extern int get_stats(int* blink, int* ambient_alarm, int* posture_alarm, int use_buf);
+
+        [DllImport("GoErgo.dll")]
+        static extern int webCamMain();
+
+        void webCamMainWrapper()
+        {
+            webCamMain();
+        }
+
         public Form1()
         {
             InitializeComponent();
-            angle = "0";
+            // Start of Webcam worker thread
+            Thread camThread = new Thread(new ThreadStart(webCamMainWrapper));
+            camThread.Start();
+
+            Thread statsThread = new Thread(new ThreadStart(GetStats));
+            statsThread.Start();
+            statsThread.IsBackground = true;
+            // End of WebCam worker thread
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -36,6 +54,16 @@ namespace GoErgoUI
             
         }
 
+        unsafe void GetStats()
+        {
+            Thread.Sleep(1000);
+            this.label2.BeginInvoke((MethodInvoker) delegate() {
+                int blink, ambient_alarm, posture_alarm;
+                get_stats(&blink, &ambient_alarm, &posture_alarm, 1);
+                label2.Text = String.Format(blink + ":" + ambient_alarm + ":" + posture_alarm);
+                }); 
+
+        }
         private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
              
@@ -94,6 +122,11 @@ namespace GoErgoUI
             g.DrawImage(b, b.Width / 2 - b.Height / 2, b.Height / 2 - b.Width / 2, b.Height, b.Width);
 
             return returnBitmap;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
 
 

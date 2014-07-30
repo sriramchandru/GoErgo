@@ -1,4 +1,7 @@
-﻿namespace GoErgoUI
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Threading;
+namespace GoErgoUI
 {
     partial class Form1
     {
@@ -21,7 +24,6 @@
         }
 
         #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -35,6 +37,7 @@
             this.pictureFace = new System.Windows.Forms.PictureBox();
             this.pictureLeg = new System.Windows.Forms.PictureBox();
             this.pictureBack = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureLeg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBack)).BeginInit();
@@ -99,12 +102,24 @@
             this.pictureBack.TabIndex = 2;
             this.pictureBack.TabStop = false;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(405, 502);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(51, 20);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "label2";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(670, 573);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.pictureFace);
             this.Controls.Add(this.pictureLeg);
             this.Controls.Add(this.pictureBack);
@@ -129,6 +144,7 @@
         private System.Windows.Forms.PictureBox pictureBack;
         private System.Windows.Forms.PictureBox pictureLeg;
         private System.Windows.Forms.PictureBox pictureFace;
+        private System.Windows.Forms.Label label2;
     }
 }
 
