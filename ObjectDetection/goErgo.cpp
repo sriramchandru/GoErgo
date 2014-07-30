@@ -231,8 +231,8 @@ void delay_frames(int nframes)
 		if (!frame)
 			exit_nicely("cannot query frame");
 		cvShowImage(wnd_name, frame);
-		if (diff)
-			cvShowImage(wnd_debug, diff);
+//		if (diff)
+//			cvShowImage(wnd_debug, diff);
 		cvWaitKey(30);
 	}
 }
@@ -480,7 +480,7 @@ extern "C"  __declspec( dllexport ) int initCam(void)
 
 	configureDefaults(mat_frame);
 	detectAmbientLight(mat_frame,true);
-	cvNamedWindow(wnd_debug, 1);
+//	cvNamedWindow(wnd_debug, 1);
 	return 1;
 }
 
@@ -706,7 +706,7 @@ int detectBlink(Mat &mat_frame, IplImage *frame, bool eye_hint)
 		}
 
 		imshow(wnd_name, mat_frame);
-		cvShowImage(wnd_debug, diff);
+//		cvShowImage(wnd_debug, diff);
 		if (previous) 
 			cvReleaseImage(&previous);
 		previous = (IplImage*)cvClone(gray);

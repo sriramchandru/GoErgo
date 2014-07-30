@@ -1,39 +1,5 @@
-﻿Build started 7/30/2014 6:42:23 PM.
-     1>Project "C:\Users\nagaur\Documents\GitHub\GoErgo\ObjectDetection\ObjectDetection.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\OpenCV\build\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /AI"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AIC:\Windows\System32 /Zi /clr /nologo /W3 /WX- /sdl /Od /GL /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _WINDLL /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Debug\GoErgo.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\mscorlib.dll" /errorReport:prompt /clr:nostdlib goErgo.cpp
-         goErgo.cpp
-     1>goErgo.cpp(127): warning C4244: '=' : conversion from 'ULONG64' to 'unsigned long', possible loss of data
-     1>goErgo.cpp(133): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>goErgo.cpp(134): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>goErgo.cpp(111): warning C4101: 'buf' : unreferenced local variable
-     1>goErgo.cpp(185): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(283): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(322): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(365): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(472): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(763): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>goErgo.cpp(871): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>c:\opencv\opencv\build\include\opencv2\core\types_c.h(311): warning C4793: 'cvRound' : function compiled as native :
-         	Found an intrinsic not supported in managed code
-     1>c:\opencv\opencv\build\include\opencv2\core\types_c.h(311): warning C4793: 'cvRound' : function compiled as native :
-         	Aligned data types not supported in managed code
-     1>c:\opencv\opencv\build\include\opencv2\core\types_c.h(312): warning C4793: 'cvRound' : function compiled as native :
-         	Found an intrinsic not supported in managed code
-     1>c:\opencv\opencv\build\include\opencv2\core\types_c.h(312): warning C4793: 'cvRound' : function compiled as native :
-         	Aligned data types not supported in managed code
-     1>c:\opencv\opencv\build\include\opencv2\core\types_c.h(337): warning C4793: 'cvRound' : function compiled as native :
-         	Aligned data types not supported in managed code
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\nagaur\Documents\GitHub\GoErgo\x64\Debug\GoErgo.dll" /INCREMENTAL /NOLOGO /LIBPATH:C:\Windows\System32 /LIBPATH:C:\opencv\OpenCV\build\x64\vc12\lib opencv_core249d.lib opencv_imgproc249d.lib opencv_highgui249d.lib opencv_ml249d.lib opencv_video249d.lib opencv_features2d249d.lib opencv_calib3d249d.lib opencv_objdetect249d.lib opencv_contrib249d.lib opencv_legacy249d.lib opencv_flann249d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\nagaur\Documents\GitHub\GoErgo\x64\Debug\GoErgo.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:CONSOLE /LTCG /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X64 /DLL x64\Debug\goErgo.obj
-         x64\Debug\stdafx.obj
-         "x64\Debug\.NETFramework,Version=v4.0.AssemblyAttributes.obj"
-     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
-            Creating library C:\Users\nagaur\Documents\GitHub\GoErgo\x64\Debug\GoErgo.lib and object C:\Users\nagaur\Documents\GitHub\GoErgo\x64\Debug\GoErgo.exp
-         LINK : /LTCG specified but no code generation required; remove /LTCG from the link command line to improve linker performance
-         ObjectDetection.vcxproj -> C:\Users\nagaur\Documents\GitHub\GoErgo\x64\Debug\GoErgo.dll
-     1>Done Building Project "C:\Users\nagaur\Documents\GitHub\GoErgo\ObjectDetection\ObjectDetection.vcxproj" (Build target(s)).
+﻿Build started 7/30/2014 10:05:55 PM.
 
 Build succeeded.
 
-Time Elapsed 00:00:04.14
+Time Elapsed 00:00:00.03
