@@ -73,6 +73,7 @@
             this.pictureFace.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureFace.Name = "pictureFace";
             this.pictureFace.Size = new System.Drawing.Size(110, 94);
+            this.pictureFace.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureFace.TabIndex = 4;
             this.pictureFace.TabStop = false;
             // 
@@ -83,6 +84,7 @@
             this.pictureLeg.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureLeg.Name = "pictureLeg";
             this.pictureLeg.Size = new System.Drawing.Size(232, 53);
+            this.pictureLeg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureLeg.TabIndex = 3;
             this.pictureLeg.TabStop = false;
             // 
@@ -93,7 +95,7 @@
             this.pictureBack.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBack.Name = "pictureBack";
             this.pictureBack.Size = new System.Drawing.Size(300, 292);
-            this.pictureBack.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBack.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBack.TabIndex = 2;
             this.pictureBack.TabStop = false;
             // 

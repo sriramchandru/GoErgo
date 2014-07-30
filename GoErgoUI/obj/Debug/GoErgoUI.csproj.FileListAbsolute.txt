@@ -1,0 +1,8 @@
+D:\Hack\GoErgo\GoErgoUI\bin\Debug\GoErgoUI.exe.config
+D:\Hack\GoErgo\GoErgoUI\bin\Debug\GoErgoUI.exe
+D:\Hack\GoErgo\GoErgoUI\bin\Debug\GoErgoUI.pdb
+D:\Hack\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.Form1.resources
+D:\Hack\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.Properties.Resources.resources
+D:\Hack\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.csproj.GenerateResource.Cache
+D:\Hack\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.exe
+D:\Hack\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.pdb
