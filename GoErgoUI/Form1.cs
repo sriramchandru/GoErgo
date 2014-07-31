@@ -59,7 +59,6 @@ namespace GoErgoUI
             {
                 button1.BackgroundImage = Image.FromFile(imgfile);
             });
-
             eyeBlinkCounter.BeginInvoke((MethodInvoker)delegate()
             {
                 eyeBlinkCounter.Text = String.Format("Blink Counter = " + blink_cntr);
@@ -70,7 +69,7 @@ namespace GoErgoUI
         static float lightMin = 0;
         private void processAmbientLight(float percent_ambient)
         {
-            if(percent_ambient <0)
+            if (percent_ambient < 0)
                 percent_ambient = 0;
             if(percent_ambient > 255)
                 percent_ambient = 255;
@@ -84,10 +83,6 @@ namespace GoErgoUI
             {
                 this.BackColor = Color.FromArgb(val, val, val);
 
-            });
-            pictureBack.BeginInvoke((MethodInvoker)delegate()
-            {
-                pictureBack.BackColor = Color.FromArgb(val, val, val);
             });
         }
 

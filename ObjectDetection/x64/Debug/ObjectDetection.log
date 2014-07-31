@@ -1,19 +1,19 @@
-﻿Build started 7/31/2014 2:40:14 PM.
+﻿Build started 7/31/2014 3:24:05 PM.
      1>Project "C:\Users\nagaur\Documents\GitHub\GoErgo\ObjectDetection\ObjectDetection.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\OpenCV\build\include /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /AI"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AIC:\Windows\System32 /Zi /clr /nologo /W3 /WX- /sdl /Od /GL /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _WINDLL /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Debug\GoErgo.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\mscorlib.dll" /errorReport:prompt /clr:nostdlib goErgo.cpp
          goErgo.cpp
-     1>goErgo.cpp(127): warning C4244: '=' : conversion from 'ULONG64' to 'unsigned long', possible loss of data
-     1>goErgo.cpp(133): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>goErgo.cpp(128): warning C4244: '=' : conversion from 'ULONG64' to 'unsigned long', possible loss of data
      1>goErgo.cpp(134): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>goErgo.cpp(111): warning C4101: 'buf' : unreferenced local variable
-     1>goErgo.cpp(185): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(283): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(322): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(365): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(472): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
-     1>goErgo.cpp(773): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>goErgo.cpp(881): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>goErgo.cpp(135): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>goErgo.cpp(112): warning C4101: 'buf' : unreferenced local variable
+     1>goErgo.cpp(207): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>goErgo.cpp(305): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>goErgo.cpp(344): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>goErgo.cpp(387): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>goErgo.cpp(495): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>goErgo.cpp(796): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>goErgo.cpp(907): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
      1>c:\opencv\opencv\build\include\opencv2\core\types_c.h(311): warning C4793: 'cvRound' : function compiled as native :
          	Found an intrinsic not supported in managed code
      1>c:\opencv\opencv\build\include\opencv2\core\types_c.h(311): warning C4793: 'cvRound' : function compiled as native :
@@ -36,4 +36,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.99
+Time Elapsed 00:00:04.18

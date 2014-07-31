@@ -27,6 +27,7 @@ using namespace std;
 #define POINT_BR(r)		cvPoint(r.x + r.width, r.y + r.height)
 #define POINTS(r)		POINT_TL(r), POINT_BR(r)
 
+bool isCalibrated = false;
 bool detectProximityAndEye(Mat mat_frame);
 int configureDefaults(Mat &mat_frame);
 int detectAmbientLight(Mat &mat_frame, bool configure);
@@ -152,9 +153,16 @@ void exit_nicely(char* msg);
 		 posture_t last_posture =posture_with_blink_list.front();
 		 posture_with_blink_list.pop_front();
 		 *blink = last_posture.eye_blinks;
-		 *ambient_alarm = last_posture.alarm_ambient_light;
-		 *posture_alarm = last_posture.alarm_proximity;
-		 *percent_ambient = last_posture.percent_ambient;
+		 if (isCalibrated) {
+			 *ambient_alarm = last_posture.alarm_ambient_light;
+			 *posture_alarm = last_posture.alarm_proximity;
+			 *percent_ambient = last_posture.percent_ambient;
+		 }
+		 else {
+			 *ambient_alarm = 0;
+			 *posture_alarm = 0;
+			 *percent_ambient = 100;
+		 }
 		 buf_num = 0;
 		 return 1;
 	 }
@@ -162,17 +170,31 @@ void exit_nicely(char* msg);
 		 if (buf_num > 0) 
 		 {
 			 *blink = buf_posture.eye_blinks;
-			 *ambient_alarm = buf_posture.alarm_ambient_light;
-			 *posture_alarm = buf_posture.alarm_proximity;
-			 *percent_ambient = buf_posture.percent_ambient;
+			 if (isCalibrated) {
+				 *ambient_alarm = buf_posture.alarm_ambient_light;
+				 *posture_alarm = buf_posture.alarm_proximity;
+				 *percent_ambient = buf_posture.percent_ambient;
+			 }
+			 else {
+				 *ambient_alarm = 0;
+				 *posture_alarm = 0;
+				 *percent_ambient = 100;
+			 }
 			 buf_num = 0;
 			 return 1;
 		 }
 	 }
 	 *blink = curr_posture.eye_blinks;
-	 *ambient_alarm = curr_posture.alarm_ambient_light;
-	 *posture_alarm = curr_posture.alarm_proximity;
-	 *percent_ambient = buf_posture.percent_ambient;
+	 if (isCalibrated) {
+		 *ambient_alarm = curr_posture.alarm_ambient_light;
+		 *posture_alarm = curr_posture.alarm_proximity;
+		 *percent_ambient = buf_posture.percent_ambient;
+	 }
+	 else {
+		 *ambient_alarm = 0;
+		 *posture_alarm = 0;
+		 *percent_ambient = 100;
+	 }
 	 buf_num = 0;
 	 return 1;
 
@@ -420,6 +442,7 @@ extern "C" __declspec(dllexport) void calibrate(void)
 */
 extern "C"  __declspec( dllexport ) int initCam(void)
 {
+	buf_posture.percent_ambient = 100;
 //	pFile = fopen("stats.txt", "a+");
 	GetSystemTimeAsFileTime(&st);
 	stime = GetTickCount();
@@ -787,6 +810,7 @@ int detectAmbientLight(Mat &mat_frame, bool configure = false)
 		GetSystemTimeAsFileTime(&currt);
 		ticks = GetTickCount() - stime;
 		memset((void*)&curr_posture, 0, sizeof(posture_t));
+		curr_posture.percent_ambient = 100;
 		curr_posture.clock_ticks = ticks;
 		curr_posture.time = currt;
 		if (mat_frame.empty())
@@ -801,7 +825,8 @@ int detectAmbientLight(Mat &mat_frame, bool configure = false)
 		bool eye_hint = detectProximityAndEye(mat_frame);
 
 		detectBlink(mat_frame, frame, false);
-		detectAmbientLight(mat_frame);
+		if (isCalibrated)
+			detectAmbientLight(mat_frame);
 
 		posture_vec.push_back(curr_posture);
 
@@ -820,6 +845,7 @@ int detectAmbientLight(Mat &mat_frame, bool configure = false)
 		} else if ((char)c == 'c') { 
 			configureDefaults(mat_frame);
 			detectAmbientLight(mat_frame, true);
+			isCalibrated = true;
 		}
 		if (blink_count > 0) {
 			posture_with_blink_list.push_back(curr_posture);
