@@ -41,6 +41,20 @@ namespace GoErgoUI
             InitializeComponent();
             serialPort1.Open();
             string[] ports = SerialPort.GetPortNames();
+
+            // Start of Webcam worker thread
+            Thread camThread = new Thread(new ThreadStart(webCamMainWrapper));
+            camThread.Start();
+
+            // End of WebCam worker thread
+            Thread statsThread = new Thread(new ThreadStart(GetStats));
+            statsThread.Start();
+            statsThread.IsBackground = true;
+
+            Form formwid = new FormWidget();
+            formwid.Show();
+
+
         }
 
         private void processBlink(int blink)
@@ -67,7 +81,8 @@ namespace GoErgoUI
 
         static float lightMax = 130;
         static float lightMin = 0;
-        private void processAmbientLight(float percent_ambient)
+        static float alarm_prev = 0;
+        private void processAmbientLight(int ambient_alarm, float percent_ambient)
         {
             if (percent_ambient < 0)
                 percent_ambient = 0;
@@ -78,6 +93,9 @@ namespace GoErgoUI
             if(lightMax < percent_ambient)
                 lightMax = percent_ambient;
 
+            if ((alarm_prev == ambient_alarm) && (ambient_alarm == 1))
+                return;
+            alarm_prev = ambient_alarm;
             int val = Convert.ToInt32(percent_ambient * 255/lightMax);
             this.BeginInvoke((MethodInvoker)delegate()
             {
@@ -148,7 +166,7 @@ namespace GoErgoUI
                     processBlink(blink);
 
                     processProximity(posture_alarm);
-                    processAmbientLight(percent_ambient);
+                    processAmbientLight(ambient_alarm, percent_ambient);
 
                 }
                 catch (Exception ex)
@@ -201,7 +219,7 @@ namespace GoErgoUI
                         phoneAngle = rotationAngleInt;
                         int faceDisplacement = -Convert.ToInt32(Math.Round(Math.Tan(0.01745 * (phoneAngle - 90.0)) * pictureFace.Size.Height, 0));
                         pictureFace.Location = new Point(face_x + faceDisplacement, face_y);
-                        RotateImg(pictureBack, "../../Resources/back.jpg", (rotationAngleInt - 90.0).ToString());
+                        RotateImg(pictureBack, "../../Resources/back1.png", (rotationAngleInt - 90.0).ToString());
                     }
                     catch(Exception ex)
                     {
@@ -240,9 +258,9 @@ namespace GoErgoUI
         {
             Bitmap returnBitmap = new Bitmap(b.Width, b.Height + 1);
             Graphics g = Graphics.FromImage(returnBitmap);
-            g.TranslateTransform((float)b.Width / 2, (float)b.Height / 2);
+            g.TranslateTransform((float)b.Width / 2, (float)b.Height/2);
             g.RotateTransform(-float.Parse(angle));
-            g.TranslateTransform(-(float)b.Width / 2, -(float)b.Height / 2);
+            g.TranslateTransform(-(float)b.Width / 2, -(float)b.Height/2);
             g.DrawImage(b, b.Width / 2 - b.Height / 2, b.Height / 2 - b.Width / 2, b.Height, b.Width);
 
             return returnBitmap;
@@ -255,20 +273,17 @@ namespace GoErgoUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // Start of Webcam worker thread
-            Thread camThread = new Thread(new ThreadStart(webCamMainWrapper));
-            camThread.Start();
 
-            // End of WebCam worker thread
-            Thread statsThread = new Thread(new ThreadStart(GetStats));
-            statsThread.Start();
-            statsThread.IsBackground = true;
+        }
 
-
-            Form formwid = new FormWidget();
-            formwid.Show();
-
-
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                Environment.Exit(0);
+            }
+            catch (Exception ex) { }
+            
         }
 
 

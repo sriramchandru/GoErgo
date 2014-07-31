@@ -34,7 +34,6 @@ namespace GoErgoUI
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.eyeBlinkCounter = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.laptopPicture = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.pictureFace = new System.Windows.Forms.PictureBox();
@@ -54,7 +53,7 @@ namespace GoErgoUI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(633, 773);
+            this.label1.Location = new System.Drawing.Point(800, 776);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(111, 17);
             this.label1.TabIndex = 1;
@@ -72,21 +71,10 @@ namespace GoErgoUI
             this.eyeBlinkCounter.TabIndex = 5;
             this.eyeBlinkCounter.Click += new System.EventHandler(this.label2_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(564, 1);
-            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(205, 69);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Calibrate";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // laptopPicture
             // 
             this.laptopPicture.Image = global::GoErgoUI.Properties.Resources.laptop1;
-            this.laptopPicture.Location = new System.Drawing.Point(928, 318);
+            this.laptopPicture.Location = new System.Drawing.Point(1095, 321);
             this.laptopPicture.Margin = new System.Windows.Forms.Padding(4);
             this.laptopPicture.Name = "laptopPicture";
             this.laptopPicture.Size = new System.Drawing.Size(189, 230);
@@ -108,7 +96,7 @@ namespace GoErgoUI
             // pictureFace
             // 
             this.pictureFace.Image = global::GoErgoUI.Properties.Resources.face1;
-            this.pictureFace.Location = new System.Drawing.Point(519, 123);
+            this.pictureFace.Location = new System.Drawing.Point(686, 126);
             this.pictureFace.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureFace.Name = "pictureFace";
             this.pictureFace.Size = new System.Drawing.Size(147, 116);
@@ -119,7 +107,7 @@ namespace GoErgoUI
             // pictureLeg
             // 
             this.pictureLeg.Image = global::GoErgoUI.Properties.Resources.leg1;
-            this.pictureLeg.Location = new System.Drawing.Point(564, 686);
+            this.pictureLeg.Location = new System.Drawing.Point(731, 689);
             this.pictureLeg.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureLeg.Name = "pictureLeg";
             this.pictureLeg.Size = new System.Drawing.Size(309, 65);
@@ -130,7 +118,7 @@ namespace GoErgoUI
             // pictureBack
             // 
             this.pictureBack.Image = global::GoErgoUI.Properties.Resources.back11;
-            this.pictureBack.Location = new System.Drawing.Point(384, 244);
+            this.pictureBack.Location = new System.Drawing.Point(551, 247);
             this.pictureBack.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBack.Name = "pictureBack";
             this.pictureBack.Size = new System.Drawing.Size(400, 425);
@@ -145,7 +133,6 @@ namespace GoErgoUI
             this.ClientSize = new System.Drawing.Size(1344, 897);
             this.Controls.Add(this.laptopPicture);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.eyeBlinkCounter);
             this.Controls.Add(this.pictureFace);
             this.Controls.Add(this.pictureLeg);
@@ -153,7 +140,8 @@ namespace GoErgoUI
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "GoErGo";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.laptopPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureFace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureLeg)).EndInit();
@@ -171,7 +159,6 @@ namespace GoErgoUI
         private System.Windows.Forms.PictureBox pictureLeg;
         private System.Windows.Forms.PictureBox pictureFace;
         private System.Windows.Forms.Label eyeBlinkCounter;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox laptopPicture;
     }

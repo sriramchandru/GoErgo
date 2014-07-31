@@ -562,40 +562,43 @@ void getDistance(Mat mat_frame, int interval)
 	//else stroke(0, 255, 0);
 	//strokeWeight(2);
 	//Rectangle[] faces = opencv.detect();
-	std::vector<Rect> faces;
-	Mat mat_frame_gray;
+	try {
+		std::vector<Rect> faces;
+		Mat mat_frame_gray;
 
-	cvtColor(mat_frame, mat_frame_gray, COLOR_BGR2GRAY);
-	equalizeHist(mat_frame_gray, mat_frame_gray);
+		cvtColor(mat_frame, mat_frame_gray, COLOR_BGR2GRAY);
+		equalizeHist(mat_frame_gray, mat_frame_gray);
 
-	//-- Detect faces
-	face_cascade.detectMultiScale(mat_frame_gray, faces, 1.1, 3, 0, Size(30, 30));
+		//-- Detect faces
+		face_cascade.detectMultiScale(mat_frame_gray, faces, 1.1, 3, 0, Size(30, 30));
 
 
-	int dist = 0;
-	for (int i = 0; i < faces.size(); i++) {
-		//printf(faces[i].x + "," + faces[i].y);
-		cv::rectangle(mat_frame, faces[i], CV_RGB(0, 255, 0));
-		rSig = faces[i].height;
-		ypos = faces[i].y;
-		int delta = trigDist - faces[i].height;
-		//the following line draws a second box with the limit distance
-		if (trigDist != 0)
-		{
-			curr_posture.faceRect = faces[0];
-			cv::Rect  deltaRect = cv::Rect(faces[i].x - delta / 2, faces[i].y - delta / 2, faces[i].width + delta, trigDist);
-			if (proximity_alm) {
-				curr_posture.alarm_proximity = true;
-				buf_num = 10;
-				cv::rectangle(mat_frame, deltaRect, CV_RGB(255, 0, 0), 2, 8,0);
+		int dist = 0;
+		for (int i = 0; i < faces.size(); i++) {
+			//printf(faces[i].x + "," + faces[i].y);
+			cv::rectangle(mat_frame, faces[i], CV_RGB(0, 255, 0));
+			rSig = faces[i].height;
+			ypos = faces[i].y;
+			int delta = trigDist - faces[i].height;
+			//the following line draws a second box with the limit distance
+			if (trigDist != 0)
+			{
+				curr_posture.faceRect = faces[0];
+				cv::Rect  deltaRect = cv::Rect(faces[i].x - delta / 2, faces[i].y - delta / 2, faces[i].width + delta, trigDist);
+				if (proximity_alm) {
+					curr_posture.alarm_proximity = true;
+					buf_num = 10;
+					cv::rectangle(mat_frame, deltaRect, CV_RGB(255, 0, 0), 2, 8, 0);
+				}
+				else {
+					curr_posture.alarm_proximity = false;
+					cv::rectangle(mat_frame, deltaRect, CV_RGB(0, 255, 0), 2, 8, 0);
+				}
 			}
-			else {
-				curr_posture.alarm_proximity = false;
-				cv::rectangle(mat_frame, deltaRect, CV_RGB(0, 255, 0), 2, 8, 0);
-			}
-		}
 			//rect(faces[i].x - delta / 2, faces[i].y - delta / 2, faces[i].width + delta, trigDist);
+		}
 	}
+	catch (exception e) {}
 	//if (trigHeight != 0) line(0, trigHeight, width, trigHeight);
 }
 
@@ -803,59 +806,66 @@ int detectAmbientLight(Mat &mat_frame, bool configure = false)
 
  extern "C"  __declspec( dllexport ) int webCamMain(void)
 {
-	Mat mat_frame;
-	initCam();
-	while (capture.read(mat_frame))
-	{
-		GetSystemTimeAsFileTime(&currt);
-		ticks = GetTickCount() - stime;
-		memset((void*)&curr_posture, 0, sizeof(posture_t));
-		curr_posture.percent_ambient = 100;
-		curr_posture.clock_ticks = ticks;
-		curr_posture.time = currt;
-		if (mat_frame.empty())
-		{
-			//printf(" --(!) No captured frame -- Break!");
-			break;
-		}
-		if (frame)
-			delete frame;
-		frame = new IplImage(mat_frame);
+	 try {
 
-		bool eye_hint = detectProximityAndEye(mat_frame);
+		 Mat mat_frame;
+		 initCam();
+		 while (capture.read(mat_frame))
+		 {
+			 GetSystemTimeAsFileTime(&currt);
+			 ticks = GetTickCount() - stime;
+			 memset((void*)&curr_posture, 0, sizeof(posture_t));
+			 curr_posture.percent_ambient = 100;
+			 curr_posture.clock_ticks = ticks;
+			 curr_posture.time = currt;
+			 if (mat_frame.empty())
+			 {
+				 //printf(" --(!) No captured frame -- Break!");
+				 break;
+			 }
+			 if (frame)
+				 delete frame;
+			 frame = new IplImage(mat_frame);
 
-		detectBlink(mat_frame, frame, false);
-		if (isCalibrated)
-			detectAmbientLight(mat_frame);
+			 bool eye_hint = detectProximityAndEye(mat_frame);
 
-		posture_vec.push_back(curr_posture);
+			 detectBlink(mat_frame, frame, false);
+			 if (isCalibrated)
+				 detectAmbientLight(mat_frame);
 
-		int c = cvWaitKey(15);
-		// escape
-		int ll_millisec = 0;
-		if ((char)c == 27) { 
-			//GetSystemTimeAsFileTime(&currt);
-			//int ll_millisec = ((LONGLONG)et.dwLowDateTime + ((LONGLONG)(et.dwHighDateTime) << 32LL) - (LONGLONG)st.dwLowDateTime + ((LONGLONG)(st.dwHighDateTime) << 32LL))/10000;
-			//ticks = GetTickCount();
-			//ll_millisec = ticks - stime;
-			//printf("%ld blinks in %ld milliseconds at rate of %f blinks per minute", blink_count, ll_millisec, (blink_count*60.0*1000.0)/(ll_millisec));
-			//statsdumps();
-			//fclose(pFile);
-			break;
-		} else if ((char)c == 'c') { 
-			configureDefaults(mat_frame);
-			detectAmbientLight(mat_frame, true);
-			isCalibrated = true;
-		}
-		if (blink_count > 0) {
-			posture_with_blink_list.push_back(curr_posture);
-			blink_count = 0;
-		}
-		if (buf_num == 10)
-			buf_posture = curr_posture;
-		if (buf_num > 0)
-			--buf_num;
-	}
+			 posture_vec.push_back(curr_posture);
+
+			 int c = cvWaitKey(15);
+			 // escape
+			 int ll_millisec = 0;
+			 if ((char)c == 27) {
+				 //GetSystemTimeAsFileTime(&currt);
+				 //int ll_millisec = ((LONGLONG)et.dwLowDateTime + ((LONGLONG)(et.dwHighDateTime) << 32LL) - (LONGLONG)st.dwLowDateTime + ((LONGLONG)(st.dwHighDateTime) << 32LL))/10000;
+				 //ticks = GetTickCount();
+				 //ll_millisec = ticks - stime;
+				 //printf("%ld blinks in %ld milliseconds at rate of %f blinks per minute", blink_count, ll_millisec, (blink_count*60.0*1000.0)/(ll_millisec));
+				 //statsdumps();
+				 //fclose(pFile);
+				 break;
+			 }
+			 else if ((char)c == 'c') {
+				 configureDefaults(mat_frame);
+				 detectAmbientLight(mat_frame, true);
+				 isCalibrated = true;
+			 }
+			 if (blink_count > 0) {
+				 posture_with_blink_list.push_back(curr_posture);
+				 blink_count = 0;
+			 }
+			 if (buf_num == 10)
+				 buf_posture = curr_posture;
+			 if (buf_num > 0)
+				 --buf_num;
+		 }
+	 }
+	 catch (Exception e){
+		 ;
+	 }
 	return 0;
 }
 
