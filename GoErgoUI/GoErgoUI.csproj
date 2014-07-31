@@ -95,7 +95,11 @@
     <Content Include="face.jpg" />
     <Content Include="leg.jpg" />
     <Content Include="Resources\back.jpg" />
+    <None Include="Resources\leg.png" />
+    <None Include="Resources\laptop.png" />
     <None Include="Resources\Bing_logo_%282013%29.svg.png" />
+    <None Include="Resources\back1.png" />
+    <None Include="Resources\face.png" />
     <Content Include="Resources\laptop.jpg" />
     <None Include="Resources\OpenEye.jpg" />
     <None Include="Resources\ClosedEye.jpg" />

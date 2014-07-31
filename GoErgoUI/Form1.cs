@@ -59,12 +59,11 @@ namespace GoErgoUI
             {
                 button1.BackgroundImage = Image.FromFile(imgfile);
             });
-/*
+
             eyeBlinkCounter.BeginInvoke((MethodInvoker)delegate()
             {
                 eyeBlinkCounter.Text = String.Format("Blink Counter = " + blink_cntr);
             });
-*/
         }
 
         static float lightMax = 130;
@@ -89,10 +88,6 @@ namespace GoErgoUI
             pictureBack.BeginInvoke((MethodInvoker)delegate()
             {
                 pictureBack.BackColor = Color.FromArgb(val, val, val);
-            });
-            eyeBlinkCounter.BeginInvoke((MethodInvoker)delegate()
-            {
-                eyeBlinkCounter.Text = String.Format("Max Value = " + lightMax + "; Min Value = " + lightMin + "; Current Value = " + percent_ambient);
             });
         }
 

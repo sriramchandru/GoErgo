@@ -231,8 +231,8 @@ void delay_frames(int nframes)
 		if (!frame)
 			exit_nicely("cannot query frame");
 		cvShowImage(wnd_name, frame);
-//		if (diff)
-//			cvShowImage(wnd_debug, diff);
+		if (diff)
+			cvShowImage(wnd_debug, diff);
 		cvWaitKey(30);
 	}
 }
@@ -478,9 +478,9 @@ extern "C"  __declspec( dllexport ) int initCam(void)
 	previous->origin = frame->origin;
 	diff->origin = frame->origin;
 
-	configureDefaults(mat_frame);
+//	configureDefaults(mat_frame);
 	detectAmbientLight(mat_frame,true);
-//	cvNamedWindow(wnd_debug, 1);
+	cvNamedWindow(wnd_debug, 1);
 	return 1;
 }
 
@@ -706,12 +706,17 @@ int detectBlink(Mat &mat_frame, IplImage *frame, bool eye_hint)
 			curr_posture.eye_blinks = blink_count;
 			curr_posture.eyeRect = eye;
 
-			//draw_rects(frame, diff, window, eye);
-			draw_text(mat_frame, "blink!", text_delay, 1);
+			try{
+				draw_rects(frame, diff, window, eye);
+			}
+			catch (exception e) {
+				;
+			}
+			//draw_text(mat_frame, "blink!", text_delay, 1);
 		}
 
 		imshow(wnd_name, mat_frame);
-//		cvShowImage(wnd_debug, diff);
+		cvShowImage(wnd_debug, diff);
 		if (previous) 
 			cvReleaseImage(&previous);
 		previous = (IplImage*)cvClone(gray);
@@ -854,11 +859,11 @@ bool detectProximityAndEye(Mat mat_frame)
 		if (is_near) 
 		{
 
-			eyes_cascade.detectMultiScale(faceROI, eyes, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(6, 6));
+			eyes_cascade.detectMultiScale(faceROI, eyes, 1.05, 2, 0 | CASCADE_SCALE_IMAGE, Size(3, 3));
 		}
 		else
 		{
-			eyes_cascade.detectMultiScale(faceROI, eyes, 1.03, 2, 0 | CASCADE_SCALE_IMAGE, Size(1, 1));
+			eyes_cascade.detectMultiScale(faceROI, eyes, 1.05, 2, 0 | CASCADE_SCALE_IMAGE, Size(1, 1));
 		}
 
 		for (size_t j = 0; j < eyes.size(); j++)
@@ -874,7 +879,7 @@ bool detectProximityAndEye(Mat mat_frame)
 				//2*radius,
 				//2*radius
 			);
-			//circle(mat_frame, eye_center, radius, Scalar(255, 0, 0), 1, 8, 0);
+			circle(mat_frame, eye_center, radius, Scalar(255, 0, 0), 1, 8, 0);
 		}
 		break;
 	}

@@ -17,3 +17,4 @@ C:\Users\nagaur\Documents\GitHub\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.Properties.R
 C:\Users\nagaur\Documents\GitHub\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.csproj.GenerateResource.Cache
 C:\Users\nagaur\Documents\GitHub\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.exe
 C:\Users\nagaur\Documents\GitHub\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.pdb
+C:\Users\nagaur\Documents\GitHub\GoErgo\GoErgoUI\obj\Debug\GoErgoUI.FormWidget.resources
